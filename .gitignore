@@ -1,0 +1,15 @@
+.vs/
+**/bin/
+**/obj/
+packages/
+SchoolDesk/App_Data/*
+!SchoolDesk/App_Data/.gitkeep
+*.user
+*.suo
+*.log
+*.mdf
+*.ldf
+*.bak
+*.zip
+*.tar.gz
+local-test-results.json

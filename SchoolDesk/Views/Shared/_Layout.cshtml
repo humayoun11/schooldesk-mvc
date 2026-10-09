@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>@ViewBag.Title · SchoolDesk</title><link rel="stylesheet" href="@Url.Content("~/Content/site.css")"/></head>
+<body>
+@if(User.Identity.IsAuthenticated){
+ <aside class="sidebar"><a class="brand" href="@Url.Action("Index","Home")"><span class="brand-mark">S</span>SchoolDesk</a><div class="nav-label">SCHOOL WORKSPACE</div><nav>
+ <a href="@Url.Action("Index","Home")">Overview</a><a href="@Url.Action("Students","School")">Students</a>
+ @if(User.IsInRole("Admin")||User.IsInRole("Teacher")){<a href="@Url.Action("Classes","School")">Classes & teachers</a><a href="@Url.Action("Attendance","School")">Take attendance</a><a href="@Url.Action("Exams","School")">Exams</a>}
+ <a href="@Url.Action("AttendanceHistory","School")">Attendance history</a>
+ @if(!User.IsInRole("Teacher")){<a href="@Url.Action("Fees","School")">Fees & payments</a>}
+ @if(!User.IsInRole("Accountant")){<a href="@Url.Action("Reports","School")">Results & reports</a>}
+ @if(User.IsInRole("Admin")){<a href="@Url.Action("Users","School")">User access</a><a href="@Url.Action("Audit","School")">Activity log</a>}
+ <a href="@Url.Action("Password","Account")">Change password</a></nav><div class="sidebar-footer">Clear records.<br/>Confident school days.</div></aside>
+}
+<div class="workspace @(User.Identity.IsAuthenticated ? "" : "guest")">
+ @if(User.Identity.IsAuthenticated){<header class="topbar"><span class="school">@System.Configuration.ConfigurationManager.AppSettings["SchoolName"]</span><div class="user-area"><span>@User.Identity.Name</span><span class="pill">@(((System.Security.Claims.ClaimsPrincipal)User).FindFirst(System.Security.Claims.ClaimTypes.Role).Value)</span>@using(Html.BeginForm("Logout","Account",FormMethod.Post)){@Html.AntiForgeryToken()<button class="text-button" type="submit">Sign out</button>}</div></header>}
+ <main>@if(TempData["Success"]!=null){<div class="notice success" role="status">@TempData["Success"]</div>}@if(TempData["Error"]!=null){<div class="notice error" role="alert">@TempData["Error"]</div>}@RenderBody()</main>
+ <footer>SchoolDesk · School management workspace</footer>
+</div><script src="@Url.Content("~/Scripts/site.js")" defer></script></body></html>
